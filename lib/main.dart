@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:light_step_app/screens/iniciar_sesion.dart';
-import 'package:light_step_app/widgets/scaffold_con_degradado.dart';
+// import 'package:light_step_app/screens/personalizacion.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(const MyApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: false, // Oculta la bandera de debug
       theme: ThemeData(
-        primarySwatch: Colors.purple,
+        scaffoldBackgroundColor:
+            Colors.transparent, // Hace el fondo del Scaffold transparente
       ),
-      home: ScaffoldConDegradado(
-        body: IniciarSesion(),
-      ),
+      home: const IniciarSesion(),
     );
   }
 }

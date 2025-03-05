@@ -1,31 +1,40 @@
 import 'package:flutter/material.dart';
 
-class ScaffoldConDegradado extends StatefulWidget {
+class ScaffoldConDegradado extends StatelessWidget {
   final Widget body;
+  final PreferredSizeWidget? appBar; // Permitir personalizar la AppBar
 
-  const ScaffoldConDegradado({super.key, required this.body});
+  const ScaffoldConDegradado({
+    super.key,
+    required this.body,
+    this.appBar, // La AppBar es opcional
+  });
 
-  @override
-  State<ScaffoldConDegradado> createState() => _ScaffoldConDegradadoState();
-}
-
-class _ScaffoldConDegradadoState extends State<ScaffoldConDegradado> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color.fromARGB(255, 32, 12, 30),
-              Colors.purple,
-            ],
+    return Stack(
+      children: [
+        // Fondo degradado
+        Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomRight,
+              colors: [
+                Color.fromARGB(255, 166, 42, 188),
+                Color.fromARGB(255, 106, 25, 100),
+                Color.fromARGB(255, 26, 1, 24),
+              ],
+            ),
           ),
         ),
-        child: widget.body,
-      ),
+        // Contenido principal con Scaffold
+        Scaffold(
+          backgroundColor: Colors.transparent, // Fondo transparente
+          appBar: appBar, // Recibe una AppBar personalizada
+          body: body, // Recibe el contenido de la pantalla
+        ),
+      ],
     );
   }
 }
