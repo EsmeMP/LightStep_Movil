@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:light_step_app/widgets/appbar.dart';
 import '../widgets/scaffold_con_degradado.dart'; // Importa tu scaffold personalizado
 
 class IniciarSesion extends StatefulWidget {
@@ -12,10 +13,7 @@ class _IniciarSesionState extends State<IniciarSesion> {
   @override
   Widget build(BuildContext context) {
     return ScaffoldConDegradado(
-      appBar: AppBar(
-        title: const Text("Iniciar Sesión"),
-        backgroundColor: Colors.black.withOpacity(0.5),
-      ),
+      appBar: const AppbarStyle(title: "Iniciar Sesión"),
       body: const Center(
         child: Text(
           "Contenido aquí",

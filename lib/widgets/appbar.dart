@@ -1,35 +1,71 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:lucide_icons/lucide_icons.dart'; // Usa íconos modernos
 
-ThemeData tema1() {
-  return ThemeData(
-    scaffoldBackgroundColor: const Color.fromARGB(255, 46, 14, 43),
-    // scaffoldBackgroundColor: const Color.fromARGB(255, 109, 14, 99),
+class AppbarStyle extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+  final VoidCallback? onPowerPressed; // Agregar función para el botón
 
-    // Estilo del AppBar
-    appBarTheme: AppBarTheme(
-      backgroundColor: const Color.fromARGB(255, 149, 19, 175),
-      titleTextStyle: TextStyle(
-        color: Colors.white,
-        fontSize: 24.0,
-        fontWeight: FontWeight.bold,
+  const AppbarStyle({super.key, required this.title, this.onPowerPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return AppBar(
+      title: Text(
+        'LightStep',
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 26,
+          fontWeight: FontWeight.bold,
+        ),
       ),
-    ),
-
-    // Estilos de texto
-    textTheme: TextTheme(
-      headlineMedium: TextStyle(
-        color: const Color.fromARGB(255, 0, 46, 52),
-        fontWeight: FontWeight.bold,
-        fontSize: 24.0,
+      leading: Padding(
+        padding: const EdgeInsets.all(0),
+        child: SizedBox(
+          height: 200, // Tamaño personalizado
+          width: 200,
+          child: SvgPicture.asset(
+            'assets/logo.svg',
+            fit: BoxFit.contain,
+          ),
+        ),
       ),
-    ),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.only(right: 10),
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle, // Hace que el botón sea circular
+              gradient: const LinearGradient(
+                colors: [
+                  Color.fromARGB(255, 252, 60, 210),
+                  Color.fromARGB(168, 112, 36, 242),
+                  //   Color.fromARGB(255, 213, 167, 251),
+                  Color.fromARGB(255, 226, 31, 86),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+            padding: const EdgeInsets.all(3), // Espacio para el borde
+            child: Container(
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Color.fromARGB(
+                    114, 250, 250, 250), // Fondo interno del botón
+              ),
+              child: IconButton(
+                icon: const Icon(LucideIcons.power, color: Colors.white),
+                onPressed: onPowerPressed ?? () {},
+              ),
+            ),
+          ),
+        ),
+      ],
+      backgroundColor: Colors.black.withOpacity(0.0),
+    );
+  }
 
-    // 🔹 Estilo del BottomNavigationBar
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
-      backgroundColor: Colors.white,
-      selectedItemColor: Colors.purple,
-      unselectedItemColor: Colors.grey,
-      showUnselectedLabels: true,
-    ),
-  );
+  @override
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
