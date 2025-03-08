@@ -21,9 +21,9 @@ class ScaffoldConDegradado extends StatelessWidget {
               begin: Alignment.topRight,
               end: Alignment.bottomRight,
               colors: [
-                Color.fromARGB(255, 166, 42, 188),
-                Color.fromARGB(255, 106, 25, 100),
-                Color.fromARGB(255, 26, 1, 24),
+                Color.fromARGB(255, 44, 1, 51),
+                Color.fromARGB(255, 106, 11, 100),
+                Color.fromARGB(255, 122, 7, 113),
               ],
             ),
           ),

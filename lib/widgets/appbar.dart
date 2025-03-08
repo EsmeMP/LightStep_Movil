@@ -13,59 +13,110 @@ class AppbarStyle extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Text(
         'LightStep',
-        style: const TextStyle(
+        style: TextStyle(
           color: Colors.white,
+          fontFamily: 'Roboto',
           fontSize: 26,
-          fontWeight: FontWeight.bold,
+          // fontWeight: FontWeight.bold,
         ),
       ),
+      toolbarHeight: 80, // Ajusta la altura del AppBar
       leading: Padding(
-        padding: const EdgeInsets.all(0),
-        child: SizedBox(
-          height: 200, // Tamaño personalizado
-          width: 200,
-          child: SvgPicture.asset(
-            'assets/logo.svg',
-            fit: BoxFit.contain,
-          ),
+        padding: const EdgeInsets.all(1),
+        child: SvgPicture.asset(
+          'assets/img/logo.svg',
+          width: 150, // Tamaño deseado
+          height: 150,
+          fit: BoxFit.contain,
         ),
       ),
       actions: [
         Padding(
-          padding: const EdgeInsets.only(right: 10),
+          padding: const EdgeInsets.only(right: 5),
           child: Container(
             decoration: BoxDecoration(
-              shape: BoxShape.circle, // Hace que el botón sea circular
+              shape: BoxShape.circle, // Borde externo circular
               gradient: const LinearGradient(
                 colors: [
-                  Color.fromARGB(255, 252, 60, 210),
-                  Color.fromARGB(168, 112, 36, 242),
-                  //   Color.fromARGB(255, 213, 167, 251),
-                  Color.fromARGB(255, 226, 31, 86),
+                  Color.fromARGB(0, 255, 153, 0),
+                  Color.fromARGB(0, 255, 153, 0),
+                  Color.fromARGB(255, 246, 88, 211),
+                  Color.fromARGB(0, 255, 153, 0),
+                  Color.fromARGB(0, 255, 153, 0),
+                  Color.fromARGB(0, 255, 153, 0),
+                  Color.fromARGB(0, 255, 153, 0),
+                  Color.fromARGB(0, 255, 153, 0),
+                  Color.fromARGB(0, 255, 153, 0),
+                  Color.fromARGB(250, 117, 48, 238),
+                  Color.fromARGB(0, 255, 153, 0),
+                  Color.fromARGB(0, 255, 153, 0),
                 ],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
             ),
-            padding: const EdgeInsets.all(3), // Espacio para el borde
+            padding: const EdgeInsets.all(4), // Espacio para el borde externo
             child: Container(
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Color.fromARGB(
-                    114, 250, 250, 250), // Fondo interno del botón
+              decoration: BoxDecoration(
+                shape: BoxShape.circle, // Borde interno circular
+                color: const Color.fromARGB(
+                    255, 44, 1, 51), // Color de fondo interno
               ),
-              child: IconButton(
-                icon: const Icon(LucideIcons.power, color: Colors.white),
-                onPressed: onPowerPressed ?? () {},
+              padding: const EdgeInsets.all(5), // Espacio para el borde externo
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle, // Borde interno circular
+                  gradient: const LinearGradient(
+                    colors: [
+                      Color.fromARGB(255, 246, 88, 211),
+                      Color.fromARGB(251, 142, 86, 240),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+                padding:
+                    const EdgeInsets.all(3), // Espacio para el borde interno
+                child: Container(
+                  height: 40,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    //   color: Color.fromARGB(
+                    //       150, 39, 38, 39), // Color de fondo interno
+                    // ),
+                    gradient: LinearGradient(
+                      colors: [
+                        Color.fromARGB(255, 246, 88, 211),
+                        Color.fromARGB(251, 142, 86, 240),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
+                  ),
+                  padding:
+                      const EdgeInsets.all(0), // Espacio para el borde interno
+                  child: Container(
+                    height: 40,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Color.fromARGB(
+                          255, 55, 2, 63), // Color de fondo interno
+                    ),
+                    child: IconButton(
+                      icon: const Icon(LucideIcons.power, color: Colors.white),
+                      onPressed: onPowerPressed ?? () {},
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
         ),
       ],
-      backgroundColor: Colors.black.withOpacity(0.0),
+      backgroundColor: const Color.fromARGB(0, 0, 0, 0),
     );
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(70);
 }

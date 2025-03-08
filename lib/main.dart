@@ -14,8 +14,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false, // Oculta la bandera de debug
       theme: ThemeData(
-        scaffoldBackgroundColor:
-            Colors.transparent, // Hace el fondo del Scaffold transparente
+        fontFamily: 'Roboto Mono',
+        scaffoldBackgroundColor: Colors.transparent,
       ),
       home: const IniciarSesion(),
     );
