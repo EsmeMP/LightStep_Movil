@@ -7,7 +7,8 @@ class ScaffoldConDegradado extends StatelessWidget {
   const ScaffoldConDegradado({
     super.key,
     required this.body,
-    this.appBar, // La AppBar es opcional
+    this.appBar,
+    required Material bottomNavigationBar, // La AppBar es opcional
   });
 
   @override

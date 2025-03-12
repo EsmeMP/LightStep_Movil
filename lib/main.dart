@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:light_step_app/screens/iniciar_sesion.dart';
+import 'package:light_step_app/screens/inicio.dart';
 // import 'package:light_step_app/screens/personalizacion.dart';
 
 void main() {
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Roboto Mono',
         scaffoldBackgroundColor: Colors.transparent,
       ),
-      home: const IniciarSesion(),
+      home: const Inicio(),
     );
   }
 }

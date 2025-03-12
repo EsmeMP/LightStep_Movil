@@ -5,8 +5,14 @@ import 'package:lucide_icons/lucide_icons.dart'; // Usa íconos modernos
 class AppbarStyle extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final VoidCallback? onPowerPressed; // Agregar función para el botón
+  final PreferredSizeWidget? bottom;
 
-  const AppbarStyle({super.key, required this.title, this.onPowerPressed});
+  const AppbarStyle({
+    super.key,
+    required this.title,
+    this.onPowerPressed,
+    this.bottom, // Agregar parámetro para la barra de pestañas
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -114,9 +120,33 @@ class AppbarStyle extends StatelessWidget implements PreferredSizeWidget {
         ),
       ],
       backgroundColor: const Color.fromARGB(0, 0, 0, 0),
+      bottom: bottom, // Se asigna el TabBar aquí
     );
   }
 
   @override
   Size get preferredSize => const Size.fromHeight(70);
 }
+
+// class TabBarStyle extends StatelessWidget implements PreferredSizeWidget {
+//   final List<Tab> tabs;
+//   final TabController? controller;
+
+//   const TabBarStyle({super.key, required this.tabs, this.controller});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return TabBar(
+//       tabs: tabs,
+//       controller: controller ?? DefaultTabController.of(context),
+//       labelColor: Colors.white,
+//       unselectedLabelColor: Colors.white70,
+//       indicatorSize: TabBarIndicatorSize.label,
+//       indicatorColor: Colors.white,
+//       indicatorWeight: 3,
+//     );
+//   }
+
+//   @override
+//   Size get preferredSize => const Size.fromHeight(50);
+// }
