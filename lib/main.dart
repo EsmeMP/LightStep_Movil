@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:light_step_app/screens/consumo.dart';
+import 'package:light_step_app/screens/encendido.dart';
 import 'package:light_step_app/screens/iniciar_sesion.dart';
 import 'package:light_step_app/screens/inicio.dart';
+import 'package:light_step_app/screens/personalizacion.dart';
 // import 'package:light_step_app/screens/personalizacion.dart';
 
 void main() {
@@ -18,7 +21,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Roboto Mono',
         scaffoldBackgroundColor: Colors.transparent,
       ),
-      home: const Inicio(),
+      home: const ConsumoScreen(),
     );
   }
 }

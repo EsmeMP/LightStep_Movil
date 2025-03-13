@@ -7,10 +7,12 @@ environment:
   sdk: ^3.6.0
 
 dependencies:
+  animated_text_kit: ^4.2.3
   flutter:
     sdk: flutter
   flutter_svg: ^2.0.9
   lucide_icons: ^0.255.0
+  flutter_colorpicker: ^1.1.0
 
 dev_dependencies:
   flutter_test:
