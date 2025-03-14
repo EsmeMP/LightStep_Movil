@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 // import 'package:flutter_application_1/screens/inicio.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:light_step_app/screens/inicio.dart';
-import 'package:light_step_app/widgets/app&tab.dart';
-import 'package:light_step_app/widgets/scaffold_con_degradado.dart'; // Importa la librería para animación
+import 'package:light_step_app/widgets/appbar.dart';
+import 'package:light_step_app/widgets/scaffold_con_degradado.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -22,79 +22,66 @@ class _IniciarSesionState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return ScaffoldConDegradado(
       appBar: const AppbarStyle(title: "Iniciar Sesión"),
-      body: Stack(
-        children: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Ícono de usuario
-                  Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: LinearGradient(
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                        colors: [Color(0xFFFF0080), Color(0xFF8000FF)],
-                      ),
-                    ),
-                    child: const CircleAvatar(
-                      radius: 50,
-                      backgroundColor: Colors.black,
-                      child: Icon(Icons.person, size: 60, color: Colors.white),
-                    ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(4),
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [Color(0xFFFF0080), Color(0xFF8000FF)],
                   ),
-                  const SizedBox(height: 20),
-
-                  // Texto animado "Iniciar Sesión"
-                  _animatedTitle(),
-                  const SizedBox(height: 40),
-
-                  // Campos de texto (Usuario y Contraseña)
-                  _buildTextField(
-                      Icons.person, "Usuario", false, _usuarioController),
-                  const SizedBox(height: 20),
-                  _buildTextField(
-                      Icons.lock, "Contraseña", true, _passwordController),
-                  const SizedBox(height: 20),
-
-                  // Botón de Iniciar Sesión
-                  SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        gradient: const LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          colors: [Color(0xFFFF0080), Color(0xFF8000FF)],
-                        ),
-                      ),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          _validarYContinuar();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent,
-                          shadowColor: Colors.transparent,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: const Text("Iniciar Sesión",
-                            style: TextStyle(color: Colors.white)),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
+                child: const CircleAvatar(
+                  radius: 50,
+                  backgroundColor: Colors.black,
+                  child: Icon(Icons.person, size: 60, color: Colors.white),
+                ),
               ),
-            ),
+              const SizedBox(height: 20),
+              _animatedTitle(),
+              const SizedBox(height: 40),
+              _buildTextField(
+                  Icons.person, "Usuario", false, _usuarioController),
+              const SizedBox(height: 20),
+              _buildTextField(
+                  Icons.lock, "Contraseña", true, _passwordController),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(8),
+                    gradient: const LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [Color(0xFFFF0080), Color(0xFF8000FF)],
+                    ),
+                  ),
+                  child: ElevatedButton(
+                    onPressed: _validarYContinuar,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Text("Iniciar Sesión",
+                        style: TextStyle(color: Colors.white)),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
       bottomNavigationBar: Material(
         color: Colors.purple, // Fondo para que se vea mejor
@@ -110,7 +97,6 @@ class _IniciarSesionState extends State<LoginScreen> {
     );
   }
 
-  /// Animación de título "Iniciar Sesión"
   Widget _animatedTitle() {
     return DefaultTextStyle(
       style: const TextStyle(
@@ -122,16 +108,17 @@ class _IniciarSesionState extends State<LoginScreen> {
         animatedTexts: [
           TyperAnimatedText(
             "Iniciar Sesión",
-            speed: const Duration(milliseconds: 200),
+            speed: const Duration(milliseconds: 100), // Más rápido y fluido
           ),
         ],
-        isRepeatingAnimation: true, // Hace que la animación se repita
-        repeatForever: true, // Se repite indefinidamente
+        isRepeatingAnimation: true,
+        repeatForever: true,
+        pause:
+            const Duration(seconds: 1), // Añade una pequeña pausa al reiniciar
       ),
     );
   }
 
-  /// Campo de texto con borde y color personalizado
   Widget _buildTextField(IconData icon, String hintText, bool obscureText,
       TextEditingController controller) {
     return Padding(
@@ -151,7 +138,7 @@ class _IniciarSesionState extends State<LoginScreen> {
             borderRadius: BorderRadius.circular(28),
             color: Colors.purple.shade900,
           ),
-          child: TextFormField(
+          child: TextField(
             controller: controller,
             obscureText: obscureText,
             style: const TextStyle(color: Colors.white),
@@ -174,7 +161,6 @@ class _IniciarSesionState extends State<LoginScreen> {
     );
   }
 
-  /// Valida los campos y navega a la pantalla de inicio
   void _validarYContinuar() {
     String usuario = _usuarioController.text.trim();
     String password = _passwordController.text.trim();
@@ -182,10 +168,6 @@ class _IniciarSesionState extends State<LoginScreen> {
     if (usuario.isEmpty || password.isEmpty) {
       _mostrarMensaje("Por favor, ingresa usuario y contraseña.");
     } else {
-      // Cerrar el teclado
-      FocusScope.of(context).unfocus();
-
-      // Navegar a la pantalla de inicio
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const Inicio()),
@@ -193,7 +175,6 @@ class _IniciarSesionState extends State<LoginScreen> {
     }
   }
 
-  /// Muestra un mensaje de error si los campos están vacíos
   void _mostrarMensaje(String mensaje) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:light_step_app/widgets/appbar.dart';
+import 'package:light_step_app/widgets/scaffold_con_degradado.dart';
 
 class Personalizacion extends StatefulWidget {
   const Personalizacion({super.key});
@@ -31,14 +33,10 @@ class _PersonalizacionState extends State<Personalizacion> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('LightStep'),
-        titleTextStyle: TextStyle(fontSize: 42, color: Colors.white),
-        backgroundColor: const Color.fromARGB(255, 73, 19, 79),
-      ),
+    return ScaffoldConDegradado(
+      appBar: AppbarStyle(title: 'Personalización'),
       body: Container(
-        color: const Color.fromARGB(255, 73, 19, 79),
+        color: const Color.fromARGB(0, 73, 19, 79),
         padding: EdgeInsets.all(16),
         child: SingleChildScrollView(
           child: Column(
@@ -332,6 +330,17 @@ class _PersonalizacionState extends State<Personalizacion> {
               ),
             ],
           ),
+        ),
+      ),
+      bottomNavigationBar: Material(
+        color: Colors.purple, // Fondo para que se vea mejor
+        child: const TabBar(
+          tabs: [
+            Tab(icon: Icon(Icons.home), text: "Inicio"),
+            Tab(icon: Icon(Icons.settings), text: "Personalización"),
+            Tab(icon: Icon(Icons.battery_charging_full), text: "Consumo"),
+            Tab(icon: Icon(Icons.person), text: "Perfil"),
+          ],
         ),
       ),
     );

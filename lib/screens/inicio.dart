@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:light_step_app/widgets/app&tab.dart';
+import 'package:light_step_app/widgets/appbar.dart';
 import 'package:light_step_app/widgets/scaffold_con_degradado.dart';
 
 class Inicio extends StatefulWidget {

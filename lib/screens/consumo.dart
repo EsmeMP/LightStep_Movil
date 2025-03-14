@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:light_step_app/widgets/appbar.dart';
+import 'package:light_step_app/widgets/scaffold_con_degradado.dart';
 
 void main() {
   runApp(const MainApp());
@@ -44,8 +46,9 @@ class _ConsumoScreenState extends State<ConsumoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.purple.shade800, // Fondo morado más oscuro
+    return ScaffoldConDegradado(
+      appBar: AppbarStyle(title: 'Personalización'),
+      // backgroundColor: Colors.purple.shade800, // Fondo morado más oscuro
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -70,6 +73,31 @@ class _ConsumoScreenState extends State<ConsumoScreen> {
                   Colors.purple.shade600, Colors.pink.shade400),
             ),
           ],
+        ),
+      ),
+      bottomNavigationBar: Material(
+        color: Colors.purple, // Fondo para que se vea mejor
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                color: Colors.white,
+              ),
+              IconButton(
+                icon: const Icon(Icons.settings),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/seccion1');
+                },
+                color: Colors.white,
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:light_step_app/widgets/scaffold_con_degradado.dart';
 
 class Encendido extends StatefulWidget {
   const Encendido({super.key});
@@ -10,15 +11,9 @@ class Encendido extends StatefulWidget {
 class _EncendidoState extends State<Encendido> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return ScaffoldConDegradado(
       body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFF300048), Color(0xFF59036A)],
-          ),
-        ),
+        decoration: const BoxDecoration(),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -121,6 +116,17 @@ class _EncendidoState extends State<Encendido> {
                 ),
               ),
             ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: Material(
+        color: Colors.purple, // Fondo para que se vea mejor
+        child: const TabBar(
+          tabs: [
+            Tab(icon: Icon(Icons.home), text: "Inicio"),
+            Tab(icon: Icon(Icons.settings), text: "Personalización"),
+            Tab(icon: Icon(Icons.battery_charging_full), text: "Consumo"),
+            Tab(icon: Icon(Icons.person), text: "Perfil"),
           ],
         ),
       ),
