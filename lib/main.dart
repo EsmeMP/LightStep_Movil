@@ -16,14 +16,23 @@ void main() async {
   print('Firebase inicializado correctamente');
 
   LightstepService service = LightstepService();
-
+  // // MANDAR A LLAMAR LOS SERVICIOS
+// // SIRVE PARA CONFIGURACION
   service.getConfiguracion('configuracion').listen((configuracion) {
     print('Recibidas ${configuracion.length} configuraciones');
-    for (var config in configuracion) {
-      print(
-          'ID: ${config.id}, Nombre: ${config.nombre}, Color: ${config.color}');
-    }
   });
+
+  // // SIRVE PARA HISTORIAL
+  // service.getHistorial('historial').listen((historial) {
+  //   print('Recibidas ${historial.length} historial');
+  // });
+
+  // // SIRVE PARA DISPOSITIVO
+  // service.getDispositivo('dispositivos').listen((dispositivos) {
+  //   print('Recibidas ${dispositivos.length} dispositivos');
+  // });
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

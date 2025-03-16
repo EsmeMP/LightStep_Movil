@@ -1,0 +1,1 @@
+ /home/memee/flutter_apps/appLightStep/light_step_app/.dart_tool/flutter_build/2f530099c8d15202fc7864e629005589/native_assets.yaml: 
