@@ -1,13 +1,10 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:light_step_app/screens/consumo.dart';
-import 'package:light_step_app/screens/encendido.dart';
 import 'package:light_step_app/screens/iniciar_sesion.dart';
-import 'package:light_step_app/screens/inicio.dart';
 import 'package:light_step_app/screens/perfil.dart';
 import 'package:light_step_app/screens/personalizacion.dart';
 import 'package:light_step_app/services/lightstep_service.dart';
-// import 'package:light_step_app/screens/personalizacion.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,20 +13,11 @@ void main() async {
   print('Firebase inicializado correctamente');
 
   LightstepService service = LightstepService();
-  // // MANDAR A LLAMAR LOS SERVICIOS
-// // SIRVE PARA CONFIGURACION
-  service.getConfiguracion('configuracion').listen((configuracion) {
-    print('Recibidas ${configuracion.length} configuraciones');
-  });
 
-  // // SIRVE PARA HISTORIAL
-  // service.getHistorial('historial').listen((historial) {
-  //   print('Recibidas ${historial.length} historial');
-  // });
-
-  // // SIRVE PARA DISPOSITIVO
-  // service.getDispositivo('dispositivos').listen((dispositivos) {
-  //   print('Recibidas ${dispositivos.length} dispositivos');
+  // MANDAR A LLAMAR LOS SERVICIOS
+  // SIRVE PARA CONFIGURACIÓN
+  // service.getConfiguracion('configuracion').listen((configuracion) {
+  //   print('Recibidas ${configuracion.length} configuraciones');
   // });
 
   runApp(const MyApp());
@@ -46,7 +34,13 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Roboto Mono',
         scaffoldBackgroundColor: Colors.transparent,
       ),
-      home: const Perfil(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const LoginScreen(),
+        '/personalizacion': (context) => const Personalizacion(),
+        '/consumo': (context) => const ConsumoScreen(),
+        '/perfil': (context) => const Perfil(),
+      },
     );
   }
 }

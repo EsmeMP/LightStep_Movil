@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-// import 'package:flutter_application_1/appbar.dart';
-// import 'package:flutter_application_1/scaffold_con_degradado.dart';
-// import 'package:flutter_application_1/screens/inicio.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:light_step_app/screens/inicio.dart';
-import 'package:light_step_app/widgets/appbar.dart';
+import 'package:light_step_app/screens/encendido.dart';
+// import 'package:light_step_app/screens/encendido.dart';
+// import 'package:light_step_app/screens/inicio.dart';
 import 'package:light_step_app/widgets/scaffold_con_degradado.dart';
+// import 'package:light_step_app/widgets/tabbar.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -21,7 +20,6 @@ class _IniciarSesionState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return ScaffoldConDegradado(
-      appBar: const AppbarStyle(title: "Iniciar Sesión"),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -48,10 +46,18 @@ class _IniciarSesionState extends State<LoginScreen> {
               _animatedTitle(),
               const SizedBox(height: 40),
               _buildTextField(
-                  Icons.person, "Usuario", false, _usuarioController),
+                Icons.person,
+                "Usuario",
+                false,
+                _usuarioController,
+              ),
               const SizedBox(height: 20),
               _buildTextField(
-                  Icons.lock, "Contraseña", true, _passwordController),
+                Icons.lock,
+                "Contraseña",
+                true,
+                _passwordController,
+              ),
               const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
@@ -74,8 +80,10 @@ class _IniciarSesionState extends State<LoginScreen> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
-                    child: const Text("Iniciar Sesión",
-                        style: TextStyle(color: Colors.white)),
+                    child: const Text(
+                      "Iniciar Sesión",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
               ),
@@ -113,14 +121,19 @@ class _IniciarSesionState extends State<LoginScreen> {
         ],
         isRepeatingAnimation: true,
         repeatForever: true,
-        pause:
-            const Duration(seconds: 1), // Añade una pequeña pausa al reiniciar
+        pause: const Duration(
+          seconds: 1,
+        ), // Añade una pequeña pausa al reiniciar
       ),
     );
   }
 
-  Widget _buildTextField(IconData icon, String hintText, bool obscureText,
-      TextEditingController controller) {
+  Widget _buildTextField(
+    IconData icon,
+    String hintText,
+    bool obscureText,
+    TextEditingController controller,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Container(
@@ -152,8 +165,10 @@ class _IniciarSesionState extends State<LoginScreen> {
                 borderRadius: BorderRadius.circular(28),
                 borderSide: BorderSide.none,
               ),
-              contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 15,
+              ),
             ),
           ),
         ),
@@ -170,7 +185,7 @@ class _IniciarSesionState extends State<LoginScreen> {
     } else {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const Inicio()),
+        MaterialPageRoute(builder: (context) => Encendido()),
       );
     }
   }

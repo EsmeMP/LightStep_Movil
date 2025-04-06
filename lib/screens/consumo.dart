@@ -1,82 +1,111 @@
 import 'package:flutter/material.dart';
 import 'package:light_step_app/widgets/appbar.dart';
 import 'package:light_step_app/widgets/scaffold_con_degradado.dart';
-
-void main() {
-  runApp(const MainApp());
-}
-
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: ConsumoScreen(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
+import 'package:pie_chart/pie_chart.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class ConsumoScreen extends StatefulWidget {
   const ConsumoScreen({super.key});
 
   @override
-  State<ConsumoScreen> createState() => _ConsumoScreenState();
+  _ConsumoScreenState createState() => _ConsumoScreenState();
 }
 
 class _ConsumoScreenState extends State<ConsumoScreen> {
-  // Variables para almacenar la información dinámica
-  String todayUsageTime = "03h : 30m : 50s";
-  String deviceOnCount = "5 veces";
-  double bar1Height = 150;
-  double bar2Height = 120;
+  final List<Color> colorList = const [
+    Color.fromARGB(255, 244, 6, 165),
+    Color.fromARGB(255, 193, 206, 8),
+    Color.fromARGB(255, 90, 120, 228),
+    Color.fromARGB(255, 240, 123, 80),
+  ];
 
-  // Variables de estadísticas dinámicas (de hoy y semana anterior)
-  String todayStats = "21h 00m";
-  String weekStats = "03h 00m";
+  Map<String, double> dataMap = {};
 
-  // Función para cambiar las estadísticas (simula una actualización)
-  void updateStats() {
-    setState(() {
-      todayStats = "21h 00m"; // Nuevo valor para hoy
-      weekStats = "03h 00m"; // Nuevo valor para la semana anterior
+  @override
+  void initState() {
+    super.initState();
+    _obtenerDatosDesdeFirebase();
+  }
+
+  void _obtenerDatosDesdeFirebase() {
+    DatabaseReference ref = FirebaseDatabase.instance.ref('/consumo');
+    ref.onValue.listen((event) {
+      final data = event.snapshot.value as Map?;
+      if (data != null) {
+        Map<String, double> nuevoDataMap = {};
+
+        data.forEach((key, value) {
+          if (value is num) {
+            nuevoDataMap[key] = value.toDouble();
+          }
+        });
+
+        print('Datos recibidos desde Firebase: $nuevoDataMap');
+
+        setState(() {
+          dataMap = nuevoDataMap;
+        });
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return ScaffoldConDegradado(
-      appBar: AppbarStyle(title: 'Personalización'),
-      // backgroundColor: Colors.purple.shade800, // Fondo morado más oscuro
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 40),
-            _buildSectionTitle("Consumo"),
-            const SizedBox(height: 10),
-            _buildInfoBox("Hoy has utilizado el dispositivo:", todayUsageTime),
-            const SizedBox(height: 10),
-            _buildInfoBox("El dispositivo ha sido encendido:", deviceOnCount),
-            const SizedBox(height: 20),
-            _buildSectionTitle("Estadísticas"),
-            const SizedBox(height: 10),
-            Expanded(child: _buildBarChart()),
-            const SizedBox(height: 20),
-            _buildBottomButtons(),
-            const SizedBox(height: 20),
-            // Botón centrado para actualizar estadísticas con un degradado morado y rosa
-            Center(
-              child: _buildButton("Actualizar Estadísticas",
-                  Colors.purple.shade600, Colors.pink.shade400),
-            ),
-          ],
+      appBar: AppbarStyle(title: 'Consumo por Día'),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 40),
+              _buildSectionTitle("Consumo por Día"),
+              const SizedBox(height: 30),
+              _buildContainerWithTransparentBackground(
+                child: Column(
+                  children: [
+                    if (dataMap.isEmpty)
+                      const Center(
+                        child: Text(
+                          "Cargando datos...",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      )
+                    else
+                      PieChart(
+                        dataMap: dataMap,
+                        colorList: colorList,
+                        chartValuesOptions: const ChartValuesOptions(
+                          showChartValuesInPercentage: false,
+                          decimalPlaces: 0,
+                          chartValueStyle: TextStyle(
+                            color: Color.fromARGB(255, 13, 13, 13),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        legendOptions: const LegendOptions(
+                          showLegends: true,
+                          legendTextStyle: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        chartType: ChartType.ring,
+                        ringStrokeWidth: 32,
+                        chartRadius: MediaQuery.of(context).size.width / 2,
+                      ),
+                    const SizedBox(height: 30),
+                    _buildLegend(dataMap),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: Material(
-        color: Colors.purple, // Fondo para que se vea mejor
+        color: Colors.purple,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Row(
@@ -84,16 +113,12 @@ class _ConsumoScreenState extends State<ConsumoScreen> {
             children: [
               IconButton(
                 icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
+                onPressed: () {},
                 color: Colors.white,
               ),
               IconButton(
                 icon: const Icon(Icons.settings),
-                onPressed: () {
-                  Navigator.pushNamed(context, '/seccion1');
-                },
+                onPressed: () {},
                 color: Colors.white,
               ),
             ],
@@ -105,116 +130,79 @@ class _ConsumoScreenState extends State<ConsumoScreen> {
 
   Widget _buildSectionTitle(String title) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
         gradient: const LinearGradient(
-          colors: [Colors.pink, Colors.purple],
+          colors: [Colors.pinkAccent, Colors.purple],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
+        borderRadius: BorderRadius.circular(20),
       ),
-      child: Text(
-        title,
-        style: const TextStyle(
-            color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+      padding: const EdgeInsets.all(3),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+        decoration: BoxDecoration(
+          color: const Color.fromARGB(255, 90, 8, 88),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          title,
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
     );
   }
 
-  Widget _buildInfoBox(String label, String value) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(color: Colors.white, fontSize: 16),
-        ),
-        const SizedBox(height: 5),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: Colors.purple.shade700,
-          ),
-          child: Text(
-            value,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-                color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildBarChart() {
+  Widget _buildContainerWithTransparentBackground({required Widget child}) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.purple.shade700,
-        borderRadius: BorderRadius.circular(10),
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(20),
       ),
-      padding: const EdgeInsets.all(20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          _buildBar(Colors.greenAccent, bar1Height, todayStats),
-          _buildBar(Colors.orangeAccent, bar2Height, weekStats),
-        ],
-      ),
+      child: child,
     );
   }
 
-  Widget _buildBar(Color color, double height, String label) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Container(
-          width: 40,
-          height: height,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [color, Colors.deepOrange],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
+  Widget _buildLegend(Map<String, double> dataMap) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(57, 0, 0, 0).withOpacity(0.6),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: dataMap.entries.map((entry) {
+          final colorIndex =
+              dataMap.keys.toList().indexOf(entry.key) % colorList.length;
+          return Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 6,
+              horizontal: 16,
             ),
-            borderRadius: BorderRadius.circular(10),
-          ),
-        ),
-        const SizedBox(height: 10),
-        Text(
-          label,
-          style: const TextStyle(color: Colors.white, fontSize: 16),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildBottomButtons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        _buildButton("Hoy", Colors.yellow.shade600,
-            Colors.orange.shade700), // Degradado amarillo a naranja
-        _buildButton("Semana Anterior", Colors.blue.shade400,
-            Colors.green.shade400), // Degradado azul claro a verde
-      ],
-    );
-  }
-
-  Widget _buildButton(String text, Color startColor, Color endColor) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
-        gradient: LinearGradient(
-          colors: [startColor, endColor],
-        ),
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(
-            color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+            child: Row(
+              children: [
+                Container(
+                  width: 20,
+                  height: 20,
+                  decoration: BoxDecoration(
+                    color: colorList[colorIndex],
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  "Fecha: ${entry.key}, Segundos: ${entry.value.toInt()}",
+                  style: const TextStyle(color: Colors.white, fontSize: 15),
+                ),
+              ],
+            ),
+          );
+        }).toList(),
       ),
     );
   }

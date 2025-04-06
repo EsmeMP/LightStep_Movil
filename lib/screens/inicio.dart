@@ -3,138 +3,183 @@ import 'package:light_step_app/widgets/appbar.dart';
 import 'package:light_step_app/widgets/scaffold_con_degradado.dart';
 
 class Inicio extends StatefulWidget {
-  const Inicio({super.key});
   @override
-  State<Inicio> createState() => _InicioState();
+  _InicioState createState() => _InicioState();
 }
 
 class _InicioState extends State<Inicio> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    switch (index) {
+      case 0:
+        Navigator.pushNamed(context, '/inicio');
+        break;
+      case 1:
+        Navigator.pushNamed(context, '/personalizacion');
+        break;
+      case 2:
+        Navigator.pushNamed(context, '/consumo');
+        break;
+      case 3:
+        Navigator.pushNamed(context, '/perfil');
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScaffoldConDegradado(
-      appBar: AppbarStyle(
-        title: "Iniciar Sesión",
-      ),
-      body: Center(
+      appBar: AppbarStyle(title: 'Inicio'),
+      body: Padding(
+        padding: const EdgeInsets.all(18.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Transform.translate(
-              offset: const Offset(0, 0), // Primer botón sin desplazamiento
-              child: _buildGradientButton(
-                context,
-                "Personaliza",
-                [
-                  const Color.fromARGB(255, 168, 240, 73),
-                  const Color.fromARGB(255, 47, 177, 228)
-                ], // Degradado azul a morado
-                () {
-                  Navigator.pushNamed(context, '/seccion1');
-                },
-              ),
+            Row(
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '¡Empieza a interactuar!',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Con LightStep puedes:',
+                        style: TextStyle(color: Colors.white70, fontSize: 18),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(width: 20),
+                Image.asset(
+                  'assets/img/desc.gif',
+                  height: 150,
+                  fit: BoxFit.cover,
+                ),
+              ],
             ),
-            Transform.translate(
-              offset: const Offset(0, -40), // Segundo botón sube 20px
-              child: _buildGradientButton(
-                context,
-                "Mira tu consumo",
-                // Icons.settings,
-                [
-                  const Color.fromARGB(255, 158, 181, 251),
-                  const Color.fromARGB(255, 240, 84, 157)
-                ], // Degradado naranja a rojo
-                () {
-                  Navigator.pushNamed(context, '/seccion2');
-                },
-              ),
-            ),
-            Transform.translate(
-              offset: const Offset(0, -80), // Tercer botón sube 40px
-              child: _buildGradientButton(
-                context,
-                "Perfil",
-                // Icons.person,
-                [
-                  const Color.fromARGB(255, 240, 87, 41),
-                  const Color.fromARGB(255, 249, 201, 43)
-                ], // Degradado verde a turquesa
-                () {
-                  Navigator.pushNamed(context, '/seccion3');
-                },
+            SizedBox(height: 50),
+            Expanded(
+              child: GridView.count(
+                crossAxisCount: 2,
+                crossAxisSpacing: 12,
+                mainAxisSpacing: 12,
+                childAspectRatio: 1.3,
+                children: [
+                  _buildCard(
+                      'Ahorrar',
+                      'Reducir el consumo de energía',
+                      [
+                        Colors.red,
+                        Colors.orange,
+                      ],
+                      Icons.bolt),
+                  _buildCard(
+                      'Personalizar',
+                      'Elegir el color que quieras',
+                      [
+                        Colors.green,
+                        Colors.teal,
+                      ],
+                      Icons.color_lens),
+                  _buildCard(
+                    'Elegir efectos',
+                    'Cambiar efecto ciclo arcoíris o estático.',
+                    [Colors.blue, Colors.purple],
+                    Icons.auto_awesome,
+                  ),
+                  _buildCard(
+                    'Reducir riesgos',
+                    'Evitar accidentes en escaleras y pasillos.',
+                    [Colors.yellow, Colors.deepOrange],
+                    Icons.warning,
+                  ),
+                ],
               ),
             ),
           ],
         ),
       ),
       bottomNavigationBar: Material(
-        color: Colors.purple, // Fondo para que se vea mejor
-        child: const TabBar(
-          tabs: [
-            Tab(icon: Icon(Icons.home), text: "Inicio"),
-            Tab(icon: Icon(Icons.settings), text: "Personalización"),
-            Tab(icon: Icon(Icons.battery_charging_full), text: "Consumo"),
-            Tab(icon: Icon(Icons.person), text: "Perfil"),
+        color: Colors.black,
+        child: BottomNavigationBar(
+          backgroundColor: Colors.black,
+          selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.grey,
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Inicio'),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.palette),
+              label: 'Personalización',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.bar_chart),
+              label: 'Consumo',
+            ),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Perfil'),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildGradientButton(
-    BuildContext context,
-    String text,
-    // IconData icon,
-    List<Color> gradientColors,
-    VoidCallback onPressed,
+  Widget _buildCard(
+    String title,
+    String subtitle,
+    List<Color> colors,
+    IconData icon,
   ) {
-    return Align(
-      alignment: Alignment.centerLeft, // Alinea el botón a la izquierda
-      child: Transform.translate(
-        offset: const Offset(-40, 0), // Mueve el botón -40 en X
-        child: Container(
-          width: MediaQuery.of(context).size.width * 1,
-          height: 240,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: gradientColors,
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-            borderRadius: const BorderRadius.only(
-              topRight: Radius.circular(120),
-              bottomRight: Radius.circular(120),
-            ), // Solo redondeamos el lado derecho
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black26,
-                blurRadius: 5,
-                offset: Offset(3, 3),
-              ),
-            ],
-          ),
-          child: InkWell(
-            onTap: onPressed,
-            borderRadius: const BorderRadius.only(
-              topRight: Radius.circular(120),
-              bottomRight: Radius.circular(120),
-            ), // Coincide con el `borderRadius` del Container
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // Icon(icon, size: 40, color: Colors.white),
-                // const SizedBox(width: 10),
-                Text(
-                  text,
-                  style: const TextStyle(
-                    fontSize: 30,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(14),
+        gradient: LinearGradient(
+          colors: colors,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 4,
+            spreadRadius: 1,
+            offset: Offset(2, 3),
+          ),
+        ],
+      ),
+      padding: EdgeInsets.all(12),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, color: Colors.white, size: 32),
+          SizedBox(height: 8),
+          Text(
+            title,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 6),
+          Text(
+            subtitle,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white70, fontSize: 12),
+          ),
+        ],
       ),
     );
   }
